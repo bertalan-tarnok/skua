@@ -853,14 +853,27 @@ export const h = <T extends Tagname>(
   return t;
 };
 
+/**
+ * The (output) assets directory. (this is based on the date, to prevent caching issues)
+ */
 export const assets = Date.now().toString(16);
 
+/**
+ * Initialize the static site generation
+ * @param assetsPath `assets directory` `(default is "assets")`
+ */
 export const init = (assetsPath = "assets") => {
   Deno.removeSync("out", { recursive: true });
   copySync(assetsPath, `out/${assets}`);
 };
 
+/**
+ * Creates a page in the `out` directory
+ */
 export const page = (html: string, path: string) => {
-  Deno.mkdirSync(path.replace(/\/[^\/]*$/, ""), { recursive: true });
-  Deno.writeTextFileSync(path, html);
+  if (path.includes("/")) {
+    Deno.mkdirSync(path.replace(/\/[^\/]*$/, ""), { recursive: true });
+  }
+
+  Deno.writeTextFileSync(`out/${path}`, html);
 };
