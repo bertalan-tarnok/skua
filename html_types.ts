@@ -797,6 +797,7 @@ export type Attrs = {
   var: HTMLAttributes;
   video: VideoHTMLAttributes;
   wbr: HTMLAttributes;
+  [k: `${string}-${string}`]: HTMLAttributes;
 };
 
 export type Tagname = keyof Attrs;
